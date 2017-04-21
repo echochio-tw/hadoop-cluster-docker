@@ -4,6 +4,10 @@ BASE use alpine & jse 1.8.0_112-b15 & hadoop-2.7.2
 
 Source of echochio/hadoop
 
+
+
+Let try it .....
+
 ```
 docker run -itd  -p 50070:50070 -p 8088:8088 --name hadoop-master --hostname hadoop-master echochio/hadoop
 docker run -itd --name hadoop-slave1 --hostname hadoop-slave1 echochio/hadoop

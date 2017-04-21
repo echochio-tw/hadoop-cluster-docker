@@ -117,4 +117,5 @@ RUN chmod +x ~/start-hadoop.sh && \
 RUN /usr/local/hadoop/bin/hdfs namenode -format
 RUN /usr/bin/ssh-keygen -A
 
+WORKDIR /root
 ENTRYPOINT ~/loop.sh

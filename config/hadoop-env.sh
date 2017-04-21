@@ -22,12 +22,14 @@
 # remote nodes.
 
 # The java implementation to use.
-export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+#export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 
 # The jsvc implementation to use. Jsvc is required to run secure datanodes
 # that bind to privileged ports to provide authentication of data transfer
 # protocol.  Jsvc is not required if SASL is configured for authentication of
 # data transfer protocol using non-privileged ports.
+export JAVA_HOME=/opt/jdk
+
 #export JSVC_HOME=${JSVC_HOME}
 
 export HADOOP_CONF_DIR=${HADOOP_CONF_DIR:-"/etc/hadoop"}

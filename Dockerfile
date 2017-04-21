@@ -14,8 +14,7 @@ ENV JAVA_VERSION_MAJOR=8 \
 RUN set -ex && \
     apk upgrade --update && \
     apk add --update libstdc++ curl ca-certificates bash openssh && \
-    for pkg in glibc-${GLIBC_VERSION} glibc-bin-${GLIBC_VERSION} glibc-i18n-${GLIBC_VERSION}; do curl -sSL https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/${pkg}.apk -o /
-tmp/${pkg}.apk; done && \
+    for pkg in glibc-${GLIBC_VERSION} glibc-bin-${GLIBC_VERSION} glibc-i18n-${GLIBC_VERSION}; do curl -sSL https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/${pkg}.apk -o /tmp/${pkg}.apk; done && \
     apk add --allow-untrusted /tmp/*.apk && \
     rm -v /tmp/*.apk && \
     ( /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true ) && \
@@ -78,10 +77,14 @@ tmp/${pkg}.apk; done && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
 
 #ADD hadoop-2.7.2 /usr/local/hadoop
-RUN mkdir /usr/local/hadoop && \
-    curl -sSL https://github.com/kiwenlau/compile-hadoop/releases/download/2.7.2/hadoop-2.7.2.tar.gz -o /tmp/hadoop-2.7.2.tar.gz && \
-    gunzip /tmp/hadoop-2.7.2.tar.gz && \
-    tar -C /usr/local/hadoop -xf /tmp/hadoop-2.7.2.tar
+WORKDIR /tmp
+RUN curl -sSL https://github.com/kiwenlau/compile-hadoop/releases/download/2.7.2/hadoop-2.7.2.tar.gz -o /tmp/hadoop-2.7.2.tar.gz && \
+    gunzip hadoop-2.7.2.tar.gz && \
+    tar -xf hadoop-2.7.2.tar && \
+    mv hadoop-2.7.2  hadoop && \
+    mv hadoop /usr/local && \
+    rm hadoop-2.7.2.tar
+
 
 ENV HADOOP_HOME=/usr/local/hadoop
 ENV PATH=$PATH:/usr/local/hadoop/bin:/usr/local/hadoop/sbin
@@ -115,5 +118,3 @@ RUN /usr/local/hadoop/bin/hdfs namenode -format
 RUN /usr/bin/ssh-keygen -A
 
 ENTRYPOINT ~/loop.sh
-
-
